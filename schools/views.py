@@ -7,7 +7,7 @@ from users.models import User
 
 def schools(response):
     schools = School.objects.all()
-    return render(response, "schools/view.html", {'projects':schools})
+    return render(response, "schools/view.html", {'schools':schools})
 
 def create_school(response):
     if response.method == "POST":
