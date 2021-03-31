@@ -10,7 +10,7 @@ class UploadImage(forms.ModelForm):
         model = Profile
         fields = ['picture']
 
-class CreateProfile(forms.ModelForm):
+class CreateProfile(forms.form):
     school = forms.CharField(max_length=50)
     grade = forms.ChoiceField(label = "Grade", choices=[(9, "Freshman (9)"),
                                                     (10, "Sophomore (10)"),
@@ -23,9 +23,6 @@ class CreateProfile(forms.ModelForm):
                                                 (2, "Teir 2"),
                                                 (3, "Teir 3"),
                                                 (4, "Teir 4"),])
-    class Meta:
-        model = Profile
-        fields = ['school', 'grade', 'picture', 'github', 'teir']
 
 class CreateSkill(forms.ModelForm):
     name = forms.CharField(max_length=50, label="Name of skill (Python, Data Manipulation, Pandas)")
