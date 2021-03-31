@@ -17,9 +17,9 @@ def create_school(response):
             user = response.user
             name = cleaned['name']
             logo = cleaned['logo']
-            school = School(creator=name, title=logo)
+            school = School(name=name, logo=logo)
             school.save()
-            return redirect("/projects/")
+            return redirect("/schools/")
     else:
         form = CreateSchool()
     return render(response, "schools/create.html", {"form":form})
