@@ -10,7 +10,7 @@ class UploadImage(forms.ModelForm):
         model = Profile
         fields = ['picture']
 
-class CreateProfile(forms.form):
+class CreateProfile(forms.Form):
     school = forms.CharField(max_length=50)
     grade = forms.ChoiceField(label = "Grade", choices=[(9, "Freshman (9)"),
                                                     (10, "Sophomore (10)"),
