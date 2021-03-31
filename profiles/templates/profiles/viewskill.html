@@ -1,0 +1,25 @@
+{% extends "main/home.html" %}
+{% load crispy_forms_tags %}
+{% load skill_functions %}
+{% block constantcontent %}
+<style>
+    .project-info {
+        line-height: 0.4em;
+    }
+</style>
+    <div class="jumbotron" style="width: 80%; margin: auto;">
+        <h1 class="display-3">{{publicuser.username}}'s Skills</h1>
+        {% for skill in skills %}
+        <p class="lead" style="color: darkcyan;">{{skill.name}}</p>
+        <p class="project-info">{{skill.length}} of expirence and they are {{skill.ability|format_ability}} at {{skill.name}}</p>
+        {% endfor %}
+        <p class="lead">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary" onclick="history.back()" >Back</button>
+                {% if user_is_user %}
+                    <a type="button" class="btn btn-secondary" href="/profile/addskill/">Add</a>
+                {% endif %}
+            </div>
+        </p>
+    </div>
+{% endblock %}

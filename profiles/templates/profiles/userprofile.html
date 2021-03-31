@@ -1,0 +1,102 @@
+{% extends "main/home.html" %}
+{% load crispy_forms_tags %}
+{% load skill_functions %}
+{% block constantcontent %}
+<style>
+    .profile-picture {
+        width: 200px;
+        height: 200px;
+        object-fit:cover;
+        border-radius:50%;
+        margin:auto;
+    }
+    .flex-container {
+        display: flex;
+    }
+    .flex-child {
+        flex: 0.5;
+    }
+    #profiletag {
+        margin:auto;
+        width: 60%;
+        text-align: center;
+    }
+    .project-info {
+        line-height: 0.4em;
+    }
+    .skills {
+        text-align: left;
+        padding: 15px;
+        margin-top: 30px;
+        width: 30%;
+        margin: auto;
+    }
+
+    .skills ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .skills ul li {
+        border: 1px solid #2d2747;
+        border-radius: 2px;
+        display: inline-block;
+        font-size: 12px;
+        margin: 0 7px 7px 0;
+        padding: 7px;
+    }
+    #userbio {
+        width: 30%;
+        margin: auto;
+    }
+    @media all and (max-width: 499px) {
+        #profiletag {
+            margin:auto;
+            width: 100%;
+            text-align: center;
+        }    
+        #userbio {
+            width: 100%;
+            margin: auto;
+        }
+        .skills {
+            text-align: left;
+            padding: 15px;
+            margin-top: 30px;
+            width: 100%;
+            margin: auto;
+        }
+    }
+</style>
+    <div class="jumbotron" id="profiletag">
+        {% if hasprofile %}
+            <img src="{{publicuser.profile.safe_img_url}}" class="profile-picture">
+                <h1 class="display-3">{{publicuser.username}}</h1>
+                <p class="lead">{{publicuser.profile.school.name}}</p>
+                <p id="userbio">{{publicuser.profile.bio}}</p>
+                <br>
+                <p class="project-info"><small>Teir:  {{publicuser.profile.teir}} </a></small></p>
+                <p class="project-info"><small>Grade: {{publicuser.profile.grade}}</small></p>
+                <p class="project-info"><small>Email: {{publicuser.email}}</small></p>
+                <p class="project-info"><small>Github: <a href="{{publicuser.profile.github}}">{{publicuser.profile.github}}</a></small></p>
+                <div class="skills" style="padding-top: 1%;">
+                    <h6>Skills</h6>
+                    <ul>
+                        {% for skill in publicuser.skills.all %}
+                        <li>{{skill.name}}</li>
+                        {% endfor %}
+                        <a type="button" class="btn btn-outline-success" href="/profile/addskill/">Add</a>
+                    </ul>
+                </div>
+                <div class="btn-group" role="group">
+                    <a type="button" class="btn btn-secondary" href="/profile/{{publicuser.id}}/viewskill/">Skills</a>
+                    <button type="button" class="btn btn-secondary" onclick="history.back()">Back</button>
+                    <a type="button" class="btn btn-secondary" href="edit/">Edit</a>
+                </div>
+        {% else %}
+        <h1 class="display-3">{{publicuser.username}}</h1>
+        <a type="button" class="btn btn-success btn-lg" href="/profile/create">Create Profile</a>
+        {% endif%}
+    </div>
+{% endblock %}

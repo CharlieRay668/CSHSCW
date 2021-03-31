@@ -1,0 +1,250 @@
+{% extends "main/home.html" %}
+{% load crispy_forms_tags %}
+{% load project_functions %}
+{% block constantcontent %}
+<style>
+    .autocomplete {
+        /*the container must be positioned relative:*/
+        position: relative;
+        display: inline-block;
+    }
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+    .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        border-bottom: 1px solid #d4d4d4;
+    }
+    .autocomplete-items div:hover {
+        /*when hovering an item:*/
+        background-color: #e9e9e9;
+    }
+    .autocomplete-active {
+        /*when navigating through the items using the arrow keys:*/
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+    }
+</style>
+    <div class="jumbotron" style="width: 45%; margin: auto;">
+        <div class="form-group">
+            <p class="lead">Creator: <a href="/profile/{{project.creator.id}}">{{project.creator.username}}</a></p>
+            <hr class="my-4">
+            <label class="col-form-label col-form-label-lg" for="title">Title</label>
+                <input class="form-control form-control-lg" type="text" value="{{project.title}}" id="title" style="width: 80%;" onchange="updateField('title')">
+            <label class="col-form-label col-form-label-lg" for="related_skills">Related Skills</label>
+                <input class="form-control form-control-lg" type="text" value="{{project.related_skills | format_relative_skills}}" id="related_skills"  style="width: 80%;" onchange="updateField('related_skills')">
+            <label class="col-form-label col-form-label-lg" for="difficulty">Difficulty</label>
+            <div>
+                <select class="form-control col-form-label-lg" id="difficulty"  style="width: 80%; height: fit-content;" onchange="updateField('difficulty')">
+                    <option value="" selected disabled hidden>{{project.difficulty | format_difficulty}}</option>
+                    <option value="1">Very Easy</option>
+                    <option value="2">Easy</option>
+                    <option value="3">Medium</option>
+                    <option value="4">Hard</option>
+                    <option value="5">Very Hard</option>
+                </select>
+            </div>
+            {% if project.project_leader is None %}
+            <label class="col-form-label col-form-label-lg" for="add_project_leader">Add Project Leader</label>
+            <span class="badge badge-pill badge-danger">This project has no leader!</span>
+            <br>
+            <div class="autocomplete" style="width:100%;">
+                <input class="form-control form-control-lg" type="text" placeholder="Project Leader" id="add_project_leader" style="float: left; width: 80%;">
+                <button type="button" class="btn btn-success" style="margin-left: 1%; height: 47px;" onclick="updateField('add_project_leader')">Add</button>
+            </div>
+            <br>
+            <div class="alert alert-dismissible alert-danger" id="unkown_user_error_add_leader" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Oh snap!</strong> There doesn't seem to be a user with that name, please try again.
+            </div>
+            {% else %}
+            <br>
+            <input id="remove_project_leader" value="{{project.project_leader.username}}" style="display: none;">
+            <p class="lead">Leader:  <a href="/profile/{{project.project_leader.id}}">{{project.project_leader.username}}</a></p>
+            <button type="button" class="btn btn-danger" onclick="updateField('remove_project_leader')">Remove Leader</button>
+            <br>
+            {% endif %}
+            <label class="col-form-label col-form-label-lg" for="add_project_member">Add Project Member</label>
+            {% if project.project_members.all|length == 0 %}
+            <span class="badge badge-pill badge-danger">This project has no members!</span>
+            {% else %}
+            <p class="lead">Current Members: {{project.project_members | format_members}}</a></p>
+            {% endif %}
+            <div class="autocomplete" style="width:100%;">
+                <input class="form-control form-control-lg" type="text" placeholder="Project Member" id="add_project_member" style="float: left; width: 80%;">
+                <button type="button" class="btn btn-success" style="margin-left: 1%; height: 47px;" onclick="updateField('add_project_member')">Add</button>
+            </div>
+            <br>
+            <div class="alert alert-dismissible alert-danger" id="unkown_user_error_add_member" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Oh snap!</strong> There doesn't seem to be a user with that name, please try again.
+            </div>
+            {% if project.project_members.all|length > 0 %}
+            <label class="col-form-label col-form-label-lg" for="remove_project_member">Remove Project Member</label>
+            <br>
+            <div class="autocomplete" style="width: 100%;">
+                <input class="form-control form-control-lg" type="text" placeholder="Project Member" id="remove_project_member" style="float: left; width: 80%;">
+                <button type="button" class="btn btn-danger" style="margin-left: 1%; height: 47px;" onclick="updateField('remove_project_member')">Remove</button>
+            </div>
+            <br>
+            <div class="alert alert-dismissible alert-danger" id="unkown_user_error_remove_member" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Oh snap!</strong> There doesn't seem to be a user with that name, please try again.
+            </div>
+            {% endif %}
+            <label class="col-form-label col-form-label-lg" for="description">Description</label>
+            <textarea class="form-control" id="description" rows="8" onchange="updateField('description')">{{project.description}}</textarea>
+        </div>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="active" {{project.active|format_active}} onchange="updateField('active')">
+            <label class="custom-control-label" for="active">Active</label>
+          </div>
+        <p class="lead">
+        <button class="btn btn-secondary btn-lg" onclick="history.back()" role="button">Back</button>
+        </p>
+    </div>
+<script>
+    function updateField(field){
+        var get_data = {};
+        get_data[field] = document.getElementById(field).value;
+        get_data["csrfmiddlewaretoken"] = "{{csrf_token}}";
+        $.ajax({
+            type: "GET",
+            url: "/projects/{{project.id}}/update/",
+            data: get_data,
+            success: function(data){
+                location.reload();
+            },
+            error: function(data){
+                if (data['responseText'] = "User not Found") {
+                    if (field == "add_project_leader") {
+                        document.getElementById("unkown_user_error_add_leader").style.display = "block";
+                    }
+                    if (field == "add_project_member") {
+                        document.getElementById("unkown_user_error_add_member").style.display = "block";
+                    }
+                    if (field == "remove_project_member") {
+                        document.getElementById("unkown_user_error_remove_member").style.display = "block";
+                    }
+                }
+                console.log("failure");
+                console.log(data);
+            },
+        });
+    }
+
+    users = {{users|safe}};
+    try {autocomplete(document.getElementById("add_project_leader"), users);}
+    catch(err) {}
+    try {autocomplete(document.getElementById("add_project_member"), users);}
+    catch(err) {}
+    try {autocomplete(document.getElementById("remove_project_member"), users);}
+    catch(err) {}
+    function autocomplete(inp, arr) {
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function(e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) { return false;}
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                /*create a DIV element for each matching element:*/
+                b = document.createElement("DIV");
+                /*make the matching letters bold:*/
+                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                b.innerHTML += arr[i].substr(val.length);
+                /*insert a input field that will hold the current array item's value:*/
+                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                /*execute a function when someone clicks on the item value (DIV element):*/
+                    b.addEventListener("click", function(e) {
+                    /*insert the value for the autocomplete text field:*/
+                    inp.value = this.getElementsByTagName("input")[0].value;
+                    /*close the list of autocompleted values,
+                    (or any other open lists of autocompleted values:*/
+                    closeAllLists();
+                });
+                a.appendChild(b);
+            }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function(e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+            } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+            } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+                /*and simulate a click on the "active" item:*/
+                if (x) x[currentFocus].click();
+            }
+            }
+        });
+        function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete-active");
+        }
+        }
+        function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+            if (elmnt != x[i] && elmnt != inp) {
+            x[i].parentNode.removeChild(x[i]);
+        }
+        }
+    }
+    /*execute a function when someone clicks in the document:*/
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+  }
+</script>
+{% endblock %}

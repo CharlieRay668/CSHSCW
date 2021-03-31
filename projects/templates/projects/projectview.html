@@ -1,0 +1,46 @@
+{% extends "main/home.html" %}
+{% load crispy_forms_tags %}
+{% load project_functions %}
+{% block constantcontent %}
+<style>
+    .project {
+        margin: auto;
+
+    }
+    .project-description {
+        max-height: 15em;
+        text-overflow: ellipsis;
+        overflow: hidden
+    }
+</style>
+    <br>
+    <a href="create/" type="button" class="btn btn-primary btn-lg btn-block" style="width: 30%; margin: auto;">Create Project</a>
+    <br>
+    <div id="projects">
+        {% for project in projects %}
+            <div class="card border-primary mb-3 project" style="max-width: 35rem;">
+                <!-- <div class="card-header">
+                    <div class="alert alert-dismissible alert-warning">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <p class="mb-0">You created</p>
+                      </div>
+                </div> -->
+                <div class="card-header">{{project.related_skills | format_relative_skills}}</div>
+                <div class="card-body">
+                <h4 class="card-title">{{project.title}}</h4>
+                <p class="card-text project-description">{{project.description}}</p>
+                {% if project in user.created_projects.all %}
+                    <span class="badge badge-warning">You Created</span>
+                {% endif %}
+                {% if project in user.leaded_projects.all %}
+                    <span class="badge badge-success">You Lead</span>
+                {% endif %}
+                {% if project in user.projects.all %}
+                    <span class="badge badge-primary">Member</span>
+                {% endif %}
+                <a type="button" class="btn btn-info" style="float: right;" href="/projects/{{project.id}}">More</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

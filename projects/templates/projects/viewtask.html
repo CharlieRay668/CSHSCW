@@ -1,0 +1,44 @@
+{% extends "main/home.html" %}
+{% load crispy_forms_tags %}
+{% load project_functions %}
+{% block constantcontent %}
+<style>
+    .project-info {
+        line-height: 0.4em;
+    }
+</style>
+    <div class="jumbotron" style="width: 80%; margin: auto;">
+        <h1 class="display-4">{{task.title}}</h1>
+        <p class="lead">{{project.related_skills | format_relative_skills}}</p>
+        <p class="project-info"><small>Asignee: <a href="/profile/{{task.asignee.id}}">{{task.asignee.username}}</a></small></p>
+        <p class="project-info"><small>Asigner: <a href="/profile/{{task.asigner.id}}">{{task.asigner.username}}</a></small></p>
+        <p class="project-info"><small>Deadline: {{task.deadline}}</small></p>
+        
+        
+        <hr class="my-4">
+        <p>{{task.description}}</p>
+        <p class="lead">
+        <button class="btn btn-secondary btn-lg" onclick="history.back()" role="button">Back</button>
+        <a class="btn btn-danger btn-lg" onclick="deleteTask()" role="button">Delete</a>
+        </p>
+    </div>
+<script>
+    function deleteTask() {
+        var confirmation = confirm("Are you sure you want to delete this task?");
+        if (confirmation) {
+            $.ajax({
+                type: "GET",
+                url: "/projects/{{project.id}}/viewtasks/{{task.id}}/",
+                data: {"delete_task": true},
+                success: function(data){
+                    history.back()
+                },
+                error: function(data){
+                    console.log("failure");
+                    console.log(data);
+                },
+            });
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "main/home.html" %}
+{% load crispy_forms_tags %}
+{% load project_functions %}
+{% block constantcontent %}
+    <style>
+        .project {
+            margin: auto;
+
+        }
+        .project-description {
+            max-height: 15em;
+            text-overflow: ellipsis;
+            overflow: hidden
+        }
+    </style>
+
+    <br>
+    <div style="margin: auto; text-align: center;">
+    <ul class="nav nav-tabs">
+        <div style="margin: auto; display: flex;">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" onclick="showMember()" id="member_tag">You're a Member</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" onclick="showLeaded()" id="leader_tag">You Lead</a>
+          </li>
+        <li class="nav-item">
+          <a class="nav-link " data-toggle="tab" onclick="showCreated()" id="creator_tag">You Created</a>
+        </li>
+        </div>
+      </ul>
+    </div>
+    <br>
+    <div id="member_projects">
+        {% for project in member_projects %}
+            <div class="card border-primary mb-3 project" style="max-width: 35rem;">
+                <div class="card-header">{{project.related_skills | format_relative_skills}}</div>
+                <div class="card-body">
+                <h4 class="card-title">{{project.title}}</h4>
+                <p class="card-text project-description">{{project.description}}</p>
+                {% if project in user.created_projects.all %}
+                    <span class="badge badge-warning">{{possessive}} Created</span>
+                {% endif %}
+                {% if project in user.leaded_projects.all %}
+                    <span class="badge badge-success">{{possessive}} Lead</span>
+                {% endif %}
+                {% if project in user.projects.all %}
+                    <span class="badge badge-primary">Member</span>
+                {% endif %}
+                <a type="button" class="btn btn-info" style="float: right;" href="/projects/{{project.id}}">More</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div id="leader_projects" style="display: none;">
+        {% for project in leader_projects %}
+            <div class="card border-primary mb-3 project" style="max-width: 35rem;">
+                <div class="card-header">{{project.related_skills | format_relative_skills}}</div>
+                <div class="card-body">
+                <h4 class="card-title">{{project.title}}</h4>
+                <p class="card-text project-description">{{project.description}}</p>
+                {% if project in user.created_projects.all %}
+                    <span class="badge badge-warning">{{possessive}} Created</span>
+                {% endif %}
+                {% if project in user.leaded_projects.all %}
+                    <span class="badge badge-success">{{possessive}} Lead</span>
+                {% endif %}
+                {% if project in user.projects.all %}
+                    <span class="badge badge-primary">Member</span>
+                {% endif %}
+                <a type="button" class="btn btn-info" style="float: right;" href="/projects/{{project.id}}">More</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div id="creator_projects" style="display: none;">
+        {% for project in creator_projects %}
+            <div class="card border-primary mb-3 project" style="max-width: 35rem;">
+                <div class="card-header">{{project.related_skills | format_relative_skills}}</div>
+                <div class="card-body">
+                <h4 class="card-title">{{project.title}}</h4>
+                <p class="card-text project-description">{{project.description}}</p>
+                {% if project in user.created_projects.all %}
+                    <span class="badge badge-warning">{{possessive}} Created</span>
+                {% endif %}
+                {% if project in user.leaded_projects.all %}
+                    <span class="badge badge-success">{{possessive}} Lead</span>
+                {% endif %}
+                {% if project in user.projects.all %}
+                    <span class="badge badge-primary">Member</span>
+                {% endif %}
+                <a type="button" class="btn btn-info" style="float: right;" href="/projects/{{project.id}}">More</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function showCreated() {
+            document.getElementById("member_projects").style.display = "none";
+            document.getElementById("leader_projects").style.display = "none";
+            document.getElementById("creator_projects").style.display = "block";
+            document.getElementById("member_tag").classList.remove("active");
+            document.getElementById("leader_tag").classList.remove("active");
+        }   
+        function showLeaded() {
+            document.getElementById("member_projects").style.display = "none";
+            document.getElementById("leader_projects").style.display = "block";
+            document.getElementById("creator_projects").style.display = "none";
+            document.getElementById("member_tag").classList.remove("active");
+            document.getElementById("creator_tag").classList.remove("active");
+        }
+        function showMember() {
+            document.getElementById("member_projects").style.display = "block";
+            document.getElementById("leader_projects").style.display = "none";
+            document.getElementById("creator_projects").style.display = "none";
+            document.getElementById("leader_tag").classList.remove("active");
+            document.getElementById("creator_tag").classList.remove("active");
+        }
+    </script>
+{% endblock %}

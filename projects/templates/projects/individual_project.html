@@ -1,0 +1,42 @@
+{% extends "main/home.html" %}
+{% load crispy_forms_tags %}
+{% load project_functions %}
+{% block constantcontent %}
+<style>
+    .project-info {
+        line-height: 0.4em;
+    }
+</style>
+    <div class="jumbotron" style="width: 80%; margin: auto;">
+        <h1 class="display-3">{{project.title}}</h1>
+        <p class="lead">{{project.related_skills | format_relative_skills}}</p>
+        <p class="project-info"><small>Difficulty: {{project.difficulty | format_difficulty}}</small></p>
+        <p class="project-info"><small>Creator: <a href="/profile/{{project.creator.id}}">{{project.creator.username}}</a></small></p>
+        {% if project.project_leader|format_leader %}
+            <p class="project-info"><small>Leader: <a href="/profile/{{project.project_leader.id}}">{{project.project_leader.username}}</a></small></p>
+        {% else %}
+            <p class="project-info"><small>Leader: Vacant</small></p>
+        {% endif %}
+        
+        {% if project.project_members|format_members %}
+        <p class="project-info"><small>Members: 
+            {% for member in project.project_members.all %}
+            <a href="/profile/{{member.id}}">{{member.username}}, </a>
+            {% endfor %}
+        </small></p>
+        {% else %}
+        <p class="project-info"><small>Members: </small></p><span class="badge badge-pill badge-danger">This project has no members!</span>
+        {% endif %}
+        
+        <hr class="my-4">
+        <p>{{project.description}}</p>
+        <p class="lead">
+        <div class="btn-group" role="group">
+            <a class="btn btn-secondary" href="edit/" role="button">Edit</a>
+            <button type="button" class="btn btn-secondary" onclick="history.back()">Back</button>
+            <a class="btn btn-secondary" href="addtask/" role="button">Add Task</a>
+            <a class="btn btn-secondary" href="viewtasks/" role="button">View Tasks</a>
+        </div>
+        </p>
+    </div>
+{% endblock %}

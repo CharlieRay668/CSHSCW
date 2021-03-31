@@ -1,0 +1,35 @@
+{% extends "main/home.html" %}
+{% load crispy_forms_tags %}
+{% load project_functions %}
+{% block constantcontent %}
+<style>
+    .task {
+        margin: auto;
+
+    }
+    .task-description {
+        max-height: 15em;
+        text-overflow: ellipsis;
+        overflow: hidden
+    }
+</style>
+    <br>
+    <button type="button" class="btn btn-secondary btn-lg btn-block" style="width: 10%; margin: auto;" onclick="history.back()" role="button">Back</button>
+    <br>
+    <div id="tasks">
+        {% for task in tasks %}
+            <div class="card border-dark mb-3 task" style="max-width: 35rem;">
+                <div class="card-header">{{task.asignee.username}}</div>
+                <div class="card-body">
+                <h4 class="card-title">{{task.title}}</h4>
+                <p class="card-text task-description">{{task.description}}</p>
+                <span class="badge badge-warning">{{task.deadline}}</span>
+                {% if user.username == task.asignee.username %}
+                    <span class="badge badge-success">Your Task</span>
+                {% endif %}
+                <a type="button" class="btn btn-info" style="float: right;" href="/projects/{{project.id}}/viewtasks/{{task.id}}">More</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

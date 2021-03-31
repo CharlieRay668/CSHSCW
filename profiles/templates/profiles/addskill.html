@@ -1,0 +1,42 @@
+{% extends "main/home.html" %}
+{% load crispy_forms_tags %}
+{% block constantcontent %}
+<style>
+    html, body {
+        max-width: 100%;
+    }
+    .outer {
+        margin:auto;
+        width: 50%;
+        display: flex;
+        border: thin solid #3a3f44;
+    }
+    @media all and (max-width: 499px) {
+        .outer {
+            margin:auto;
+            width: 90%;
+            display: flex;
+            border: thin solid #3a3f44;
+        }
+    }
+    .skillform{
+        margin: 20px;
+        width: 100%;
+    }  
+</style>
+<h1 style="text-align: center;">Add Skill</h1>
+<div class = "outer">
+    <div class='skillform'>
+        <form id="skillform" action="" method="post" enctype="multipart/form-data" autocomplete="off">
+            {% csrf_token %}
+            <fieldset>
+                {{form | crispy}}
+            </fieldset>
+            <fieldset>
+            <p style="color: red;">{{error_msg}}</p>
+            <button name="submit" type="submit" id='formsubmit' class="btn btn-success">Add Skill</button>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}
