@@ -1,0 +1,31 @@
+{% extends "main/home.html" %}
+{% load crispy_forms_tags %}
+{% load project_functions %}
+{% block constantcontent %}
+<style>
+    .project {
+        margin: auto;
+
+    }
+    .project-description {
+        max-height: 15em;
+        text-overflow: ellipsis;
+        overflow: hidden
+    }
+</style>
+    <br>
+    <a href="create/" type="button" class="btn btn-primary btn-lg btn-block" style="width: 30%; margin: auto;">Create School</a>
+    <br>
+    <div id="projects">
+        {% for school in schools %}
+            <div class="card border-primary mb-3 project" style="max-width: 35rem;">
+                <div class="card-header">header</div>
+                <div class="card-body">
+                <h4 class="card-title">{{school.name}}</h4>
+                <p class="card-text project-description">description</p>
+                <!-- <a type="button" class="btn btn-info" style="float: right;" href="/projects/{{project.id}}">More</a> -->
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
