@@ -8,14 +8,14 @@
         <title>{% block title %}CSHS{% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
-        <link rel="apple-touch-icon" sizes="180x180" href="/static/main/images/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/static/main/images/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/static/main/images/favicon-16x16.png">
-        <link rel="manifest" href="/static/main/images/site.webmanifest">
-        <link rel="mask-icon" href="/static/main/images/safari-pinned-tab.svg" color="#5bbad5">
-        <link rel="shortcut icon" href="/static/main/images/favicon.ico">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'main/images/apple-touch-icon.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'main/images/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'main/images/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'main/images/site.webmanifest' %}">
+        <link rel="mask-icon" href="{% static 'main/images/safari-pinned-tab.svg' %}" color="#5bbad5">
+        <link rel="shortcut icon" href="{% static 'main/images//favicon.ico"' %}>
         <meta name="msapplication-TileColor" content="#da532c">
-        <meta name="msapplication-config" content="/static/main/images/browserconfig.xml">
+        <meta name="msapplication-config" content="{% static 'main/images/browserconfig.xml' %}">
         <meta name="theme-color" content="#ffffff">
     </head>
     <body data-new-gr-c-s-check-loaded="14.996.0" data-gr-ext-installed="" class="" style="" data-new-gr-c-s-loaded="14.996.0">
