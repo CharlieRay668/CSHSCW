@@ -41,8 +41,30 @@
     </div>
   </nav>
   {% block constantcontent %}
+    <div class="jumbotron" style="width: 50%; margin: auto; text-align: center;">
+        <div style="margin: auto; width: 20%; height: 20%; margin-top: -5%;">
+            <img src = "{% static 'main/images/cshslogo.png' %}" width="100%" height="100%">
+        </div>
+        <br>
+        <p>Welcome to the CSHS connectivity website!</p>
+        <p>A place to foster collaboration and excitement for all things computer science.</p>
+        <p>If you do not already have an account, <a href="/register/">register here.</a> If you already have an account, go ahead and <a href="/login/">login here.</a></p>
+        <br>
+        <p>Go get started working on some <a href="/projects/">projects</a>, or keep scrolling down to browse member submitted code, club annoucements, and more.</p>
+        <p class="lead">Member Code Highlights</p>
+        <canvas class="myCanvas" style="width: 100%; border-radius: 2%;">
+            <p>We're sorry, your browser doesn't seem to support this code sample.</p>
+        </canvas>
+        <script src="{% static 'main/scripts/ants.js' %}"></script>
+        <span>
+            <p style="float: left;">"Ants" by <a href="/profile/1">Charlie Ray</a></p>
+            <p style="float: right;"><a href="https://github.com/CharlieRay668/ants">See how it works</a></p>
+        </span>
+        
+    </div>
   {% endblock %}
   {% if user.is_authenticated %}
+  
   <div id="authenticated", name="authenticated", class = 'main'>
       {% block authenticated %}
       {% endblock %}
