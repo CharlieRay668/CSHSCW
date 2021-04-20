@@ -1,6 +1,20 @@
 {% extends "main/base.html" %}
 {% load static %}
 {% block content %}
+<style>
+    #homepage-jumbo {
+        width: 50%;
+        margin: auto;
+        text-align: center;
+    }
+    @media all and (max-width: 499px) {
+        #homepage-jumbo {
+            width: 100%;
+            margin: auto;
+            text-align: center;
+        }
+    }
+</style>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <img src = "{% static 'main/images/cshslogo.png' %}" width="40" height="40">
     <a class="navbar-brand">CSHS</a>
@@ -41,14 +55,14 @@
     </div>
   </nav>
   {% block constantcontent %}
-    <div class="jumbotron" style="width: 50%; margin: auto; text-align: center;">
+    <div class="jumbotron" id="homepage-jumbo">
         <div style="margin: auto; width: 20%; height: 20%; margin-top: -5%;">
             <img src = "{% static 'main/images/cshslogo.png' %}" width="100%" height="100%">
         </div>
         <br>
         <p>Welcome to the CSHS connectivity website!</p>
         <p>A place to foster collaboration and excitement for all things computer science.</p>
-        <p>If you do not already have an account, <a href="/register/">register here.</a> If you already have an account, go ahead and <a href="/login/">login here.</a></p>
+        <p>If you're new here, <a href="/register/">register here.</a> If you already have an account, go ahead and <a href="/login/">login here.</a></p>
         <br>
         <p>Go get started working on some <a href="/projects/">projects</a>, or keep scrolling down to browse member submitted code, club annoucements, and more.</p>
         <p class="lead">Member Code Highlights</p>
