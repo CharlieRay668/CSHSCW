@@ -1,0 +1,334 @@
+{% extends "main/home.html" %}
+{% load crispy_forms_tags %}
+{% block constantcontent %}
+<style>
+    .autocomplete {
+        /*the container must be positioned relative:*/
+        position: relative;
+        display: inline-block;
+    }
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+    .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        border-bottom: 1px solid #d4d4d4;
+    }
+    .autocomplete-items div:hover {
+        /*when hovering an item:*/
+        background-color: #e9e9e9;
+    }
+    .autocomplete-active {
+        /*when navigating through the items using the arrow keys:*/
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+    }
+</style>
+    <div class="jumbotron" style="width: 45%; margin: auto;">
+        <div class="form-group">
+            <hr class="my-4">
+            <label class="col-form-label col-form-label-lg" for="title">Name</label>
+                <input class="form-control form-control-lg" type="text" value="{{school.name}}" id="name" style="width: 80%;" onchange="updateField('name')">
+            <!-- Overseer -->
+            {% if school.overseer is None %}
+                <label class="col-form-label col-form-label-lg" for="add_overseer">Set Overseer</label>
+                <span class="badge badge-pill badge-warning" style="margin-bottom: 1%;">This school has no Overseer!</span>
+                <br>
+                <div class="autocomplete" style="width:100%;">
+                    <input class="form-control form-control-lg" type="text" placeholder="Overseer" id="add_overseer" style="float: left; width: 80%;">
+                    <button type="button" class="btn btn-success" style="margin-left: 1%; height: 47px;" onclick="updateField('add_overseer')">Set</button>
+                </div>
+                <br>
+                <div class="alert alert-dismissible alert-danger" id="unkown_user_error_add_overseer" style="display: none;">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Oh snap!</strong> There doesn't seem to be a user with that name, please try again.
+                </div>
+            {% else %}
+                <br>
+                <input id="remove_overseer" value="{{school.overseer.username}}" style="display: none;">
+                <p class="lead">Overseer:  <a href="/profile/{{school.overseer.id}}">{{school.overseer.username}}</a></p>
+                <button type="button" class="btn btn-danger" onclick="updateField('remove_overseer')">Remove Overseer</button>
+                <br>
+            {% endif %}
+            <!-- Technical Specialist -->
+            {% if school.tech_spec is None %}
+                <label class="col-form-label col-form-label-lg" for="add_tech_spec">Set Techinal Specialist</label>
+                <span class="badge badge-pill badge-warning" style="margin-bottom: 1%;">This school has no Techinal Specialist!</span>
+                <br>
+                <div class="autocomplete" style="width:100%;">
+                    <input class="form-control form-control-lg" type="text" placeholder="Techinal Specialist" id="add_tech_spec" style="float: left; width: 80%;">
+                    <button type="button" class="btn btn-success" style="margin-left: 1%; height: 47px;" onclick="updateField('add_tech_spec')">Set</button>
+                </div>
+                <br>
+                <div class="alert alert-dismissible alert-danger" id="unkown_user_error_add_tech_spec" style="display: none;">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Oh snap!</strong> There doesn't seem to be a user with that name, please try again.
+                </div>
+            {% else %}
+                <br>
+                <input id="remove_tech_spec" value="{{school.tech_spec.username}}" style="display: none;">
+                <p class="lead">Techinal Specialist:  <a href="/profile/{{school.tech_spec.id}}">{{school.tech_spec.username}}</a></p>
+                <button type="button" class="btn btn-danger" onclick="updateField('remove_tech_spec')">Remove Techinal Specialist</button>
+                <br>
+            {% endif %}
+            <!-- Project Manager -->
+            {% if school.proj_man is None %}
+                <label class="col-form-label col-form-label-lg" for="add_proj_man">Set Project Manager</label>
+                <span class="badge badge-pill badge-warning" style="margin-bottom: 1%;">This school has no Project Manager!</span>
+                <br>
+                <div class="autocomplete" style="width:100%;">
+                    <input class="form-control form-control-lg" type="text" placeholder="Project Manager" id="add_proj_man" style="float: left; width: 80%;">
+                    <button type="button" class="btn btn-success" style="margin-left: 1%; height: 47px;" onclick="updateField('add_proj_man')">Set</button>
+                </div>
+                <br>
+                <div class="alert alert-dismissible alert-danger" id="unkown_user_error_add_proj_man" style="display: none;">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Oh snap!</strong> There doesn't seem to be a user with that name, please try again.
+                </div>
+            {% else %}
+                <br>
+                <input id="remove_proj_man" value="{{school.proj_man.username}}" style="display: none;">
+                <p class="lead">Project Manager:  <a href="/profile/{{school.proj_man.id}}">{{school.proj_man.username}}</a></p>
+                <button type="button" class="btn btn-danger" onclick="updateField('remove_proj_man')">Remove Project Manager</button>
+                <br>
+            {% endif %}
+            <!-- Tutoring and Outreach -->
+            {% if school.tut_out is None %}
+                <label class="col-form-label col-form-label-lg" for="add_tut_out">Set Tutoring & Outreach</label>
+                <span class="badge badge-pill badge-warning" style="margin-bottom: 1%;">This school has no Tutoring & Outreach!</span>
+                <br>
+                <div class="autocomplete" style="width:100%;">
+                    <input class="form-control form-control-lg" type="text" placeholder="Tutoring & Outreach" id="add_tut_out" style="float: left; width: 80%;">
+                    <button type="button" class="btn btn-success" style="margin-left: 1%; height: 47px;" onclick="updateField('add_tut_out')">Set</button>
+                </div>
+                <br>
+                <div class="alert alert-dismissible alert-danger" id="unkown_user_error_add_tut_out" style="display: none;">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Oh snap!</strong> There doesn't seem to be a user with that name, please try again.
+                </div>
+            {% else %}
+                <br>
+                <input id="remove_tut_out" value="{{school.tut_out.username}}" style="display: none;">
+                <p class="lead">Tutoring & Outreach:  <a href="/profile/{{school.tut_out.id}}">{{school.tut_out.username}}</a></p>
+                <button type="button" class="btn btn-danger" onclick="updateField('remove_tut_out')">Remove Tutoring & Outreach</button>
+                <br>
+            {% endif %}
+            <!-- Communications -->
+            {% if school.coms is None %}
+                <label class="col-form-label col-form-label-lg" for="add_coms">Set Communications</label>
+                <span class="badge badge-pill badge-warning" style="margin-bottom: 1%;">This school has no Communications!</span>
+                <br>
+                <div class="autocomplete" style="width:100%;">
+                    <input class="form-control form-control-lg" type="text" placeholder="Communications" id="add_coms" style="float: left; width: 80%;">
+                    <button type="button" class="btn btn-success" style="margin-left: 1%; height: 47px;" onclick="updateField('add_coms')">Set</button>
+                </div>
+                <br>
+                <div class="alert alert-dismissible alert-danger" id="unkown_user_error_add_coms" style="display: none;">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Oh snap!</strong> There doesn't seem to be a user with that name, please try again.
+                </div>
+            {% else %}
+                <br>
+                <input id="remove_coms" value="{{school.coms.username}}" style="display: none;">
+                <p class="lead">Overseer:  <a href="/profile/{{school.coms.id}}">{{school.coms.username}}</a></p>
+                <button type="button" class="btn btn-danger" onclick="updateField('remove_coms')">Remove Communications</button>
+                <br>
+            {% endif %}
+            <label class="col-form-label col-form-label-lg" for="add_school_member">Add School Member</label>
+            {% if school.school_members.all|length == 0 %}
+            <span class="badge badge-pill badge-danger" style="margin-bottom: 1%;">This school has no members!</span>
+            {% else %}
+            <p class="lead">Current Members: {{school.school_members.all|length}}, <a href="/schools/{{school.id}}/viewmembers/">View all</a></p>
+            {% endif %}
+            <div class="autocomplete" style="width:100%;">
+                <input class="form-control form-control-lg" type="text" placeholder="School Member" id="add_school_member" style="float: left; width: 80%;">
+                <button type="button" class="btn btn-success" style="margin-left: 1%; height: 47px;" onclick="updateField('add_school_member')">Add</button>
+            </div>
+            <br>
+            <div class="alert alert-dismissible alert-danger" id="unkown_user_error_add_member" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Oh snap!</strong> There doesn't seem to be a user with that name, please try again.
+            </div>
+            {% if school.school_members.all|length > 0 %}
+            <label class="col-form-label col-form-label-lg" for="remove_school_member">Remove School Member</label>
+            <br>
+            <div class="autocomplete" style="width: 100%;">
+                <input class="form-control form-control-lg" type="text" placeholder="School Member" id="remove_school_member" style="float: left; width: 80%;">
+                <button type="button" class="btn btn-danger" style="margin-left: 1%; height: 47px;" onclick="updateField('remove_school_member')">Remove</button>
+            </div>
+            <br>
+            <div class="alert alert-dismissible alert-danger" id="unkown_user_error_remove_member" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Oh snap!</strong> There doesn't seem to be a user with that name, please try again.
+            </div>
+            {% endif %}
+        </div>
+        <p class="lead">
+        <button class="btn btn-secondary btn-lg" onclick="history.back()" role="button">Back</button>
+        </p>
+    </div>
+<script>
+    function updateField(field){
+        var get_data = {};
+        get_data[field] = document.getElementById(field).value;
+        get_data["csrfmiddlewaretoken"] = "{{csrf_token}}";
+        $.ajax({
+            type: "GET",
+            url: "/schools/{{school.id}}/update/",
+            data: get_data,
+            success: function(data){
+                location.reload();
+            },
+            error: function(data){
+                if (data['responseText'] = "User not Found") {
+                    if (field == "add_overseer") {
+                        document.getElementById("unkown_user_error_add_overseer").style.display = "block";
+                    }
+                    if (field == "add_tech_spec") {
+                        document.getElementById("unkown_user_error_add_tech_spec").style.display = "block";
+                    }
+                    if (field == "add_proj_man") {
+                        document.getElementById("unkown_user_error_add_proj_man").style.display = "block";
+                    }
+                    if (field == "add_tut_out") {
+                        document.getElementById("unkown_user_error_add_tut_out").style.display = "block";
+                    }
+                    if (field == "add_coms") {
+                        document.getElementById("unkown_user_error_add_coms").style.display = "block";
+                    }
+                    if (field == "add_school_member") {
+                        document.getElementById("unkown_user_error_add_member").style.display = "block";
+                    }
+                    if (field == "remove_school_member") {
+                        document.getElementById("unkown_user_error_remove_member").style.display = "block";
+                    }
+                }
+                console.log("failure");
+                console.log(data);
+            },
+        });
+    }
+
+    users = {{users|safe}};
+    try {autocomplete(document.getElementById("add_overseer"), users);}
+    catch(err) {}
+    try {autocomplete(document.getElementById("add_tech_spec"), users);}
+    catch(err) {}
+    try {autocomplete(document.getElementById("add_proj_man"), users);}
+    catch(err) {}
+    try {autocomplete(document.getElementById("add_tut_out"), users);}
+    catch(err) {}
+    try {autocomplete(document.getElementById("add_coms"), users);}
+    catch(err) {}
+    try {autocomplete(document.getElementById("add_school_member"), users);}
+    catch(err) {}
+    try {autocomplete(document.getElementById("remove_school_member"), users);}
+    catch(err) {}
+    function autocomplete(inp, arr) {
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function(e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) { return false;}
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                /*create a DIV element for each matching element:*/
+                b = document.createElement("DIV");
+                /*make the matching letters bold:*/
+                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                b.innerHTML += arr[i].substr(val.length);
+                /*insert a input field that will hold the current array item's value:*/
+                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                /*execute a function when someone clicks on the item value (DIV element):*/
+                    b.addEventListener("click", function(e) {
+                    /*insert the value for the autocomplete text field:*/
+                    inp.value = this.getElementsByTagName("input")[0].value;
+                    /*close the list of autocompleted values,
+                    (or any other open lists of autocompleted values:*/
+                    closeAllLists();
+                });
+                a.appendChild(b);
+            }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function(e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+            } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+            } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+                /*and simulate a click on the "active" item:*/
+                if (x) x[currentFocus].click();
+            }
+            }
+        });
+        function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete-active");
+        }
+        }
+        function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+            if (elmnt != x[i] && elmnt != inp) {
+            x[i].parentNode.removeChild(x[i]);
+        }
+        }
+    }
+    /*execute a function when someone clicks in the document:*/
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "main/home.html" %}
+{% load crispy_forms_tags %}
+{% block constantcontent %}
+<style>
+    .school-info {
+        line-height: 0.4em;
+    }
+</style>
+    <div class="jumbotron" style="width: 80%; margin: auto;">
+        <h1 class="display-3">{{school.name}}</h1>
+        <img src="{{school.safe_img_url}}" class="profile-picture" style="width: 30%; border-radius: 5%;">
+        <p class="lead">Leaders </p>
+        <p class="school-info">Overseer: <a href="/profile/{{school.overseer.id}}">{{school.overseer.username}}</a></p>
+        <p class="school-info">Technical Specialist: <a href="/profile/{{school.tech_spec.id}}">{{school.tech_spec.username}}</a></p>
+        <p class="school-info">Project Manager: <a href="/profile/{{school.proj_man.id}}">{{school.proj_man.username}}</a></p>
+        <p class="school-info">Tutoring and Outreach: <a href="/profile/{{school.tut_out.id}}">{{school.tut_out.username}}</a></p>
+        <p class="school-info">Communications: <a href="/profile/{{school.coms.id}}">{{school.coms.username}}</a></p>
+
+        <p class="school-info">Members: {{school.school_members.all|length}}, <a href="/schools/{{school.id}}/viewmembers/">View all</a></p>
+        
+        <hr class="my-4">
+        <p>{{project.description}}</p>
+        <p class="lead">
+        <div class="btn-group" role="group">
+            <a class="btn btn-secondary" href="edit/" role="button">Edit</a>
+            <button type="button" class="btn btn-secondary" onclick="history.back()">Back</button>
+            <a class="btn btn-secondary" href="addtask/" role="button">Add Task</a>
+            <a class="btn btn-secondary" href="viewtasks/" role="button">View Tasks</a>
+        </div>
+        </p>
+    </div>
+{% endblock %}

@@ -1,6 +1,5 @@
 {% extends "main/home.html" %}
 {% load crispy_forms_tags %}
-{% load project_functions %}
 {% block constantcontent %}
 <style>
     .project {
@@ -19,12 +18,13 @@
     <div id="projects">
         {% for school in schools %}
             <div class="card border-primary mb-3 project" style="max-width: 35rem;">
-                <div class="card-header">header</div>
+                <!-- <div class="card-header">header</div> -->
                 <div class="card-body">
                 <h4 class="card-title">{{school.name}}</h4>
-                <img src="{{school.safe_img_url}}" class="profile-picture">
-                <p class="card-text project-description">description</p>
-                <!-- <a type="button" class="btn btn-info" style="float: right;" href="/projects/{{project.id}}">More</a> -->
+                <img src="{{school.safe_img_url}}" class="profile-picture" style="width: 30%; float: right;">
+                <!-- <p class="card-text project-description">{{school.leaders.name}}</p> -->
+                <br>
+                <a type="button" class="btn btn-info" href="/schools/{{school.id}}">More</a>
                 </div>
             </div>
         {% endfor %}
