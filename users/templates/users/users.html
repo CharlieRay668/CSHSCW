@@ -14,15 +14,18 @@
 <div class="list-group">
     <h1>CSHS Members</h1>
     {% for member in users.all %}
-    {% if not member.profile %}
-        <p>No profile</p>
-    {% else %}
-        <p>has profile</p>
-    {% endif %}
-    <a href="/profile/{{member.id}}" class="list-group-item list-group-item-action">
-        <img src="{{member.profile.safe_img_url}}" class="profile-picture">
-        {{member.username}}
-    </a>
+        {% if not member.profile %}
+        <a href="/profile/{{member.id}}" class="list-group-item list-group-item-action">
+            <img src="/media/profile_picture/defaultprofile.jpg" class="profile-picture">
+            Member has no profile
+        </a>
+        {% else %}
+        <a href="/profile/{{member.id}}" class="list-group-item list-group-item-action">
+            <img src="{{member.profile.safe_img_url}}" class="profile-picture">
+            {{member.username}}
+        </a>
+        {% endif %}
+
     {% endfor %}
   </div>
 {% endblock %}
