@@ -11,7 +11,7 @@ class UploadImage(forms.ModelForm):
         fields = ['picture']
 
 class CreateProfile(forms.Form):
-    school = forms.CharField(max_length=50)
+    school = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'list':'schools'}))
     grade = forms.ChoiceField(label = "Grade", choices=[(9, "Freshman (9)"),
                                                     (10, "Sophomore (10)"),
                                                     (11, "Junior (11)"),
