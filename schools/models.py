@@ -10,7 +10,6 @@ class School(models.Model):
     proj_man = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="project_manager_of")
     tut_out = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="tutoring_outreach_of")
     coms = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="communications_of")
-    school_members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="schools")
 
     @property
     def safe_img_url(self):

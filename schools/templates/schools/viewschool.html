@@ -16,7 +16,7 @@
         <p class="school-info">Tutoring and Outreach: <a href="/profile/{{school.tut_out.id}}">{{school.tut_out.username}}</a></p>
         <p class="school-info">Communications: <a href="/profile/{{school.coms.id}}">{{school.coms.username}}</a></p>
 
-        <p class="school-info">Members: {{school.school_members.all|length}}, <a href="/schools/{{school.id}}/viewmembers/">View all</a></p>
+        <p class="school-info">Members: {{school.students.all|length}}, <a href="/schools/{{school.id}}/viewmembers/">View all</a></p>
         
         <hr class="my-4">
         <p>{{project.description}}</p>
