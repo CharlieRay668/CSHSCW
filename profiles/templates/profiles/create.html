@@ -61,7 +61,16 @@
             <form id="profileform" action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <fieldset>
-                    {{form | crispy}}
+                    {{form.grade | crispy}}
+                </fieldset>
+                <fieldset>
+                    {{form.picture | crispy}}
+                </fieldset>
+                <fieldset>
+                    {{form.github | crispy}}
+                </fieldset>
+                <fieldset>
+                    {{form.teir | crispy}}
                 </fieldset>
                 <fieldset>
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
