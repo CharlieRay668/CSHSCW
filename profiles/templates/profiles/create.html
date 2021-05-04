@@ -64,6 +64,17 @@
                     {{form | crispy}}
                 </fieldset>
                 <fieldset>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+                    <input list="brow">
+                        <datalist id="brow">
+                        <option value="Internet Explorer">
+                        <option value="Firefox">
+                        <option value="Chrome">
+                        <option value="Opera">
+                        <option value="Safari">
+                    </datalist>  
+                </fieldset>
+                <fieldset>
                 <p style="color: red;">{{error_msg}}</p>
                 <button name="submit" type="submit" id='formsubmit' class="btn btn-success">Create Profile</button>
                 </fieldset>
