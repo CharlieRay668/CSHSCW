@@ -61,27 +61,10 @@
             <form id="profileform" action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <fieldset>
-                    {{form.grade | crispy}}
-                </fieldset>
+                    {{form | crispy}}
                 <fieldset>
-                    {{form.picture | crispy}}
-                </fieldset>
-                <fieldset>
-                    {{form.github | crispy}}
-                </fieldset>
-                <fieldset>
-                    {{form.teir | crispy}}
-                </fieldset>
-                <fieldset>
-                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-                    <input list="brow">
-                        <datalist id="brow">
-                        <option value="Internet Explorer">
-                        <option value="Firefox">
-                        <option value="Chrome">
-                        <option value="Opera">
-                        <option value="Safari">
-                    </datalist>  
+                    <label for="school">Example select</label>
+                    <select list="schools" class="form-control">
                 </fieldset>
                 <fieldset>
                 <p style="color: red;">{{error_msg}}</p>
@@ -91,6 +74,11 @@
         </div>
     </div>
     <div class ='warningdiv' id ='warning_div'><p id="warning_text"></p></div>
+    <datalist id="schools">
+        {% for val in schools %}
+        <option value="{{val}}">
+        {% endfor %}
+    </datalist>  
 <script>
     schools = {{schools|safe}};
     autocomplete(document.getElementById("id_school", schools))
