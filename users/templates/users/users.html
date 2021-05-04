@@ -11,13 +11,16 @@
         margin:auto;
     }
 </style>
-<form class="form-inline my-2 my-lg-0">
-    <input class="form-control mr-sm-2" type="text" placeholder="Search">
-    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-</form>
+
 <div class="list-group">
     <h1>CSHS Members</h1>
-    {% for member in users.all %}
+    <form id="schoolform" action="" method="post" enctype="multipart/form-data" class="form-inline my-2 my-lg-0">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" name='usersearch'>
+        <button class="btn btn-secondary my-2 my-sm-0" name="submit" type="submit" id='formsubmit'>Search</button>
+    </form>
+    <br>
+    {% for member in users %}
         {% if not member.profile %}
         <a href="/profile/{{member.id}}" class="list-group-item list-group-item-action">
             <img src="/media/profile_picture/defaultprofile.jpg" class="profile-picture">
