@@ -14,6 +14,7 @@
 <div class="list-group">
     <h1>{{school.name}}</h1>
     {% for member in school.students.all %}
+    {{member.id}}
     <a href="/profile/{{member.id}}" class="list-group-item list-group-item-action">
         {{member.username}}
         <img src="{{member.profile.safe_img_url}}" class="profile-picture">
