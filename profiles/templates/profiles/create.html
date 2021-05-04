@@ -63,11 +63,8 @@
                 <fieldset>
                     {{form | crispy}}
                 <fieldset>
-                    <label for="school">Example select</label>
-                    {% for school in schools %}
-                    <p>{{school.name}}</p>
-                    {% endfor %}
-                    <select list="schools" class="form-control"></select>
+                    <label for="school">School</label>
+                    <input list="schools" class="form-control" required>
                 </fieldset>
                 <fieldset>
                 <p style="color: red;">{{error_msg}}</p>
