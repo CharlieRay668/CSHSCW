@@ -18,7 +18,6 @@ def create_profile(response):
     schools = [school.name for school in School.objects.all()]
     if response.method == "POST":
         form = CreateProfile(response.POST, response.FILES)
-        print(form.errors)
         if form.is_valid():
             cleaned = form.cleaned_data
             user = response.user
@@ -39,7 +38,8 @@ def create_profile(response):
         return render(response, "profiles/create.html", {"form":form, "schools":schools})
 
 def edit_profile(response):
-    return render(response, "profiles/editprofile.html")
+    schools = [school.name for school in School.objects.all()]
+    return render(response, "profiles/editprofile.html", {"schools":schools})
 
 def update_profile(response):
     user = response.user
@@ -64,7 +64,7 @@ def update_profile(response):
                 school = School.objects.get(name=school)
                 profile.school = school
             except:
-                return HttpResponseBadRequest("User not found")
+                return HttpResponseBadRequest("School not found")
         if grade is not None:
             profile.grade = grade
         if github is not None:
