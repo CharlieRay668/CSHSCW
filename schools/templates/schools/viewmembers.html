@@ -13,16 +13,10 @@
 </style>
 <div class="list-group">
     <h1>{{school.name}}</h1>
-    {% for member in school.students.all %}
-    {{member.profile.school.name}}
-    {{member}}
-    {{member}}
-    {{member.id}}
-    {{member.username}}
-    <a href="/profile/{{member.id}}" class="list-group-item list-group-item-action">
-        {{member.username}}
-        <img src="{{member.profile.safe_img_url}}" class="profile-picture">
-        {{member.username}}
+    {% for profile in school.students.all %}
+    <a href="/profile/{{profile.user.id}}" class="list-group-item list-group-item-action">
+        <img src="{{profile.safe_img_url}}" class="profile-picture">
+        {{profile.user.username}}
     </a>
     {% endfor %}
   </div>
