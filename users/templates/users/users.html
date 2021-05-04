@@ -16,6 +16,8 @@
     {% for member in users.all %}
     {% if member.profile is None %}
         <p>No profile</p>
+    {% else %}
+        <p>has profile</p>
     {% endif %}
     <a href="/profile/{{member.id}}" class="list-group-item list-group-item-action">
         <img src="{{member.profile.safe_img_url}}" class="profile-picture">
