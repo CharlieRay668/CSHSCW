@@ -11,12 +11,11 @@
         margin:auto;
     }
 </style>
-
 <div class="list-group">
     <h1>CSHS Members</h1>
     <form id="schoolform" action="" method="post" enctype="multipart/form-data" class="form-inline my-2 my-lg-0">
         {% csrf_token %}
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" name='usersearch'>
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" name='usersearch' list="members">
         <button class="btn btn-secondary my-2 my-sm-0" name="submit" type="submit" id='formsubmit'>Search</button>
     </form>
     <br>
@@ -34,5 +33,10 @@
         {% endif %}
 
     {% endfor %}
-  </div>
+</div>
+<datalist id="members">
+    {% for member in users %}
+    <option value="{{member.username}}">
+    {% endfor %}
+</datalist>
 {% endblock %}
