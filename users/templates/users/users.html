@@ -14,7 +14,7 @@
 <div class="list-group">
     <h1>CSHS Members</h1>
     {% for member in users.all %}
-    {% if member.profile %}
+    {% if not member.profile %}
         <p>No profile</p>
     {% else %}
         <p>has profile</p>
