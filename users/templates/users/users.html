@@ -11,6 +11,10 @@
         margin:auto;
     }
 </style>
+<form class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+</form>
 <div class="list-group">
     <h1>CSHS Members</h1>
     {% for member in users.all %}
@@ -22,7 +26,7 @@
         {% else %}
         <a href="/profile/{{member.id}}" class="list-group-item list-group-item-action">
             <img src="{{member.profile.safe_img_url}}" class="profile-picture">
-            {{member.username}}
+            {{member.username}} {{member.profile.school.name}}
         </a>
         {% endif %}
 
